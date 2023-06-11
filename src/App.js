@@ -18,7 +18,16 @@ function Nav(props) {
     let t = props.topics[i];
     lis.push(
       <li key={t.title}>
-        <a href={"/read/" + t.id}>{t.title}</a>
+        <a
+          id={t.id}
+          href={"/read/" + t.id}
+          onClick={(event) => {
+            event.preventDefault();
+            props.onC(event.target.id);
+          }}
+        >
+          {t.title}
+        </a>
       </li>
     );
   }
@@ -38,7 +47,12 @@ function App() {
   return (
     <div className="App">
       <Header title="asd"></Header>
-      <Nav topics={topics}></Nav>
+      <Nav
+        topics={topics}
+        onC={(id) => {
+          alert(id);
+        }}
+      ></Nav>
       <article>
         <h2>Welcome</h2>
         Hello, WEB
