@@ -52,7 +52,7 @@ function Nav(props) {
         </nav>
     );
 }
-function Create(props) {
+function Create(props) {1
     return (
         <article>
             <h2>Create</h2>
