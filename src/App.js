@@ -1,44 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-    const [ toDo, setToDo ] = useState("");
-    const [ toDos, setToDos ] = useState([]);
-    const onChange = (event) => setToDo(event.target.value)
-    const onSubmit = (event) => {
-        event.preventDefault()
-        if (toDo == ''){
-            return;
-        }
-        // 넣지 않으면 enter해도 값이 안사라짐
-        setToDo("")
-        // 이렇게 변경 할 수 없음
-        // toDos.push()
-
-        // let newToDos = toDos
-        // newToDos.push(toDo)
-        // {or}
-        // newToDos = [toDo, ...toDos]
-        console.log(toDos)
-        setToDos([toDo, ...toDos])
-    }
-    return (
-        <div>
-            <h1>My To Dos ({toDos.length})</h1>
-            <form onSubmit={onSubmit}>
-                <input 
-                onChange={onChange} 
-                value={toDo}
-                type="text" 
-                placeholder="Write here"
-                />
-                <button>Add To Do</button>
-            </form>
-            <hr/>
-            {toDos.map((item, index, array) => {
-                return <h1 key={index}>{item}</h1>
-            })}
-        </div>
-    )
+  const [loading, setLoading] = useState(true);
+  const [coins, setCoins] = useState([]);
+  useEffect(() => {
+    fetch("https://api.coinpaprika.com/v1/tickers")
+      .then((response) => response.json())
+      .then((json) => {
+        setCoins(json);
+        setLoading(false);
+      });
+  }, []);
+  return (
+    <div>
+      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+      {loading ? (
+        <strong>Loading...</strong>
+      ) : (
+        <select>
+          {coins.map((coin) => {
+            {
+                console.log(coin.quotes.USD.ath_date[2] == '1')
+                if (coin.quotes.USD.ath_date[2] == '1' && Math.abs(coin.quotes.USD.percent_change_7d) < 0.1) {
+                    return (
+                        <option>
+                            {coin.name} ({coin.symbol}): ${coin.quotes.USD.price} USD
+                        </option>
+                    )
+                }
+            }
+            
+        })}
+        </select>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
