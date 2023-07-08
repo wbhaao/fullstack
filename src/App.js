@@ -33,6 +33,10 @@ function App() {
                 />
                 <button>Add To Do</button>
             </form>
+            <hr/>
+            {toDos.map((item, index, array) => {
+                return <h1 key={index}>{item}</h1>
+            })}
         </div>
     )
 }
